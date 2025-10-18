@@ -6,6 +6,13 @@ admin.site.site_header = "Conference Management Admin"
 admin.site.site_title = "Conference Dashboard"
 admin.site.index_title = "Welcome to Conference Management Admin Panel"
 
+@admin.action(description="marquer comme payée")
+def mark_as_payed(modeladmin,req,queryset):
+    queryset.update(payed=True)
+
+@admin.action
+def mark_as_accepted(m,req,q):
+    q.update(status="accepted")
 
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
@@ -16,9 +23,7 @@ class SubmissionAdmin(admin.ModelAdmin):
     short_abstract.short_description = "Résumé (50c)"
 
     list_filter = ("status", "payed", "conference_id", "submission_date")
-
-    search_fields = ("title", "keywords", "user__username")
-
+    search_fields = ("title", "keywords", "user_id__username")
     list_editable = ("status", "payed")
 
     fieldsets = (
@@ -26,33 +31,20 @@ class SubmissionAdmin(admin.ModelAdmin):
             "fields": ("submission_id", "title", "abstract", "keywords")
         }),
         ("Fichier et conférence", {
-            "fields": ("paper", "conference")
+            "fields": ("papier", "conference_id")
         }),
         ("Suivi", {
-            "fields": ("status", "payed", "submission_date", "user")
+            "fields": ("status", "payed", "submission_date", "user_id")
         }),
     )
 
     readonly_fields = ("submission_id", "submission_date")
-
-    @admin.action(description="Marquer comme payées les soumissions sélectionnées")
-    def mark_as_payed(self, request, queryset):
-        updated = queryset.update(payed=True)
-        self.message_user(request, f"{updated} soumission(s) marquée(s) comme payée(s).")
-
-    @admin.action(description="Accepter les soumissions sélectionnées")
-    def mark_as_accepted(self, request, queryset):
-        updated = queryset.update(status="Accepted")
-        self.message_user(request, f"{updated} soumission(s) acceptée(s).")
-
-    actions = ["mark_as_payed", "mark_as_accepted"]
-
-
+    actions=[mark_as_payed,mark_as_accepted]
 
 class SubmissionInline(admin.StackedInline):
     model = Submission
     extra = 1
-    fields = ("title", "status", "user", "payed")
+    fields = ("title", "status", "user_id", "payed")
     readonly_fields = ("submission_id",)
     show_change_link = True
 

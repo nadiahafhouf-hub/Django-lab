@@ -71,12 +71,13 @@ class Submission(models.Model):
     def clean(self):
         errors = {}
         if self.conference_id and self.conference_id.start_date < date.today():
-            errors['conference_id'] = "La soumission ne peut être faite que pour des conférences à venir."
+            # Change 'conference_id' to 'conference_id' or use __all__ for non-field errors
+            errors['conference_id'] = ["La soumission ne peut être faite que pour des conférences à venir."]
 
         if self.keywords:
             keyword_list = [kw.strip() for kw in self.keywords.split(',') if kw.strip()]
             if len(keyword_list) > 10:
-                errors['keywords'] = f"Vous avez saisi {len(keyword_list)} mots-clés. Le maximum autorisé est 10."
+                errors['keywords'] = [f"Vous avez saisi {len(keyword_list)} mots-clés. Le maximum autorisé est 10."]
 
         if self.user_id:
             from django.utils import timezone
@@ -86,7 +87,7 @@ class Submission(models.Model):
                 submission_date__date=today
             ).count()
             if not self.pk and today_submissions >= 3:
-                errors['user_id'] = "Vous avez déjà soumis 3 conférences aujourd'hui. Limite journalière atteinte."
+                errors['user_id'] = ["Vous avez déjà soumis 3 conférences aujourd'hui. Limite journalière atteinte."]
 
         if errors:
             raise ValidationError(errors)

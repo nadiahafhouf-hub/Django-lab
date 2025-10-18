@@ -27,17 +27,6 @@ class UserAdmin(admin.ModelAdmin):
 
     ordering = ("-created_at",)
 
-    @admin.action(description="Attribuer le rôle 'Organizing Committee' aux utilisateurs sélectionnés")
-    def make_committee(self, request, queryset):
-        updated = queryset.update(role="comitte")
-        self.message_user(request, f"{updated} utilisateur(s) marqué(s) comme membre du comité d’organisation.")
-
-    @admin.action(description="Attribuer le rôle 'Participant' aux utilisateurs sélectionnés")
-    def make_participant(self, request, queryset):
-        updated = queryset.update(role="participant")
-        self.message_user(request, f"{updated} utilisateur(s) marqué(s) comme participant(s).")
-
-    actions = ["make_committee", "make_participant"]
 
 
 @admin.register(OrganizingCommittee)
@@ -61,18 +50,9 @@ class OrganizingCommitteeAdmin(admin.ModelAdmin):
 
     readonly_fields = ("created_at", "updated_at")
 
-    @admin.action(description="Promouvoir en 'Chair'")
-    def promote_to_chair(self, request, queryset):
-        updated = queryset.update(commitee_role="chair")
-        self.message_user(request, f"{updated} membre(s) promu(s) au rôle 'Chair'.")
-
-    @admin.action(description="Rétrograder en 'Member'")
-    def demote_to_member(self, request, queryset):
-        updated = queryset.update(commitee_role="member")
-        self.message_user(request, f"{updated} membre(s) rétrogradé(s) au rôle 'Member'.")
-
-    actions = ["promote_to_chair", "demote_to_member"]
 
     ordering = ("conference", "commitee_role")
 
     date_hierarchy = "date_joined"
+
+    
