@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from .models import Conference
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
+from .forms import ConferenceModel
 
 # Create your views here.
 def all_conference(req):
@@ -13,7 +15,27 @@ class ConferenceListe(ListView):
     ordering=["start_date"]
     template_name="Conference/liste.html"
 
-class ConferenceDetail(DetailView):
+class ConferenceDetail(DetailView): 
     model=Conference
     context_object_name="conference"
     template_name="Conference/details.html"
+
+class ConferenceCreate(CreateView):
+    model=Conference
+    template_name="Conference/conference_form.html"
+    #fields="__all__"
+    form_class=ConferenceModel
+    success_url = reverse_lazy("conferecne_liste")#si l'ajout est fait avec succes , on redirect vers une autre page 
+
+class ConferenceUpdate(UpdateView):
+    model=Conference
+    template_name="Conference/conference_form.html"
+    #fields="__all__"
+    form_class=ConferenceModel
+    success_url = reverse_lazy("conferecne_liste")
+
+class ConferenceDelete(DeleteView):
+    model=Conference
+    template_name="Conference/conference_delete.html"
+    success_url = reverse_lazy("conferecne_liste")
+

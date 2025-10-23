@@ -1,0 +1,11 @@
+{% if view.object.pk %}
+<h2>Modifier une conférence</h2>
+{% else %}
+<h2>Ajouter une conférence</h2>
+{% endif %}
+<form method="post">
+    {% csrf_token %} <!-- pour la sécurite de l'envoi et si ce n'est pas inclus ça ne s'envoi pas --> 
+    {{form.as_p}}
+    <button type="submit">Enregistrer</button>
+
+</form>
