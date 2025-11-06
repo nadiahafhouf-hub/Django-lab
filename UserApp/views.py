@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import RegisterForm, UserCreationForm
 from django.shortcuts import redirect
+from django.contrib.auth import logout
 
 # Create your views here.
 def register(req):
@@ -12,3 +13,7 @@ def register(req):
     else:
         forms = RegisterForm()
     return render(req,"register.html",{'forms':forms})
+
+def logout_view(req):
+    logout(req)
+    return redirect("login")

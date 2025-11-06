@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>La liste des conferences</h2>
+{% if user.is_authenticated and user.role == "commitee" %}
 <button ><a href="{% url 'conference_add' %}">Ajouter une conférence</a></button>
+{% endif %}
 </br>
 </br>
 <table border="1">
@@ -18,12 +20,14 @@
         <a href="{% url 'conference_detail' c.pk %}">
             Détails
         </a>
+        {% if user.is_authenticated and user.role == "commitee" %}
         <a href="{% url 'conference_edit' c.pk %}">
             Edit
         </a>
         <a href="{% url 'conference_delete' c.pk %}">
             Delete
         </a>
+        {% endif %}
     </td>
 </tr>
 {% endfor %}
