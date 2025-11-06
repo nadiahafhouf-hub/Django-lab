@@ -15,7 +15,7 @@ class ConferenceListe(ListView):
     ordering=["start_date"]
     template_name="Conference/liste.html"
 
-class ConferenceDetail(DetailView): 
+class ConferenceDetail(DetailView):
     model=Conference
     context_object_name="conference"
     template_name="Conference/details.html"

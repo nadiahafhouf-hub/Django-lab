@@ -4,6 +4,14 @@
     <nav>
         <a>Home</a>
         <a href="{% url 'conferecne_liste' %}">Conference</a>
+        <a>Contact</a>
+        {% if user.is_authenticated %}
+        <a>{{user.username}}</a>
+        <a>Logout</a>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Inscription</a>
+        {% endif %}
     </nav>
     <div>
         {% block content %}{% endblock%}

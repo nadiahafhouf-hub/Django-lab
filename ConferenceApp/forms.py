@@ -2,6 +2,7 @@ from django import forms
 from .models import Conference
 
 
+
 class ConferenceModel(forms.ModelForm):
     class Meta:
         model=Conference
@@ -33,3 +34,5 @@ class ConferenceModel(forms.ModelForm):
             ),
 
         }
+
+    
