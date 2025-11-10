@@ -67,11 +67,13 @@ class SubmissionCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self):
         initial = super().get_initial()
-        initial['user_id'] = self.request.user.pk  # pré-remplir le champ caché
+        conference_id = self.kwargs.get("conference_id")
+        if conference_id:
+            initial["conference_id"] = conference_id
         return initial
 
     def form_valid(self, form):
-        form.instance.user_id = self.request.user  # s’assure que l’utilisateur connecté est pris
+        form.instance.user_id = self.request.user
         return super().form_valid(form)
 
 

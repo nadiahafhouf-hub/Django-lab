@@ -13,6 +13,7 @@ urlpatterns = [
     # Submissions
     path("submission/liste/", SubmissionListView.as_view(), name="submission_liste"),
     path("submission/details/<str:pk>/", SubmissionDetailView.as_view(), name="submission_detail"),
-    path("submission/form/", SubmissionCreateView.as_view(), name="submission_add"),
+    #path("submission/form/", SubmissionCreateView.as_view(), name="submission_add"),
+    path("submission/form/<int:conference_id>/", SubmissionCreateView.as_view(), name="submission_add"),
     path("submission/edit/<str:pk>/", SubmissionUpdateView.as_view(), name="submission_edit"),
 ]
