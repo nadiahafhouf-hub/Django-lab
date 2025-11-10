@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>
+<h2 style="text-align:center;">
   {% if form.instance.pk %}
     Modifier la soumission
   {% else %}
@@ -9,12 +9,55 @@
   {% endif %}
 </h2>
 
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Enregistrer</button>
-</form>
+<div class="form-container">
+  <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="button-link">Enregistrer</button>
+      <a class="button-link" href="{% url 'submission_liste' %}">Annuler</a>
+  </form>
+</div>
 
-<a href="{% url 'submission_liste' %}">Annuler</a>
+<style>
+/* Encapsulation du formulaire pour un rendu moderne */
+.form-container {
+    background-color: #fff;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Boutons */
+.button-link {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.button-link:hover {
+    background-color: #45a049;
+}
+
+form p {
+    margin-bottom: 15px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+</style>
 
 {% endblock %}

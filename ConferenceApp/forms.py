@@ -38,8 +38,9 @@ class ConferenceModel(forms.ModelForm):
 class SubmissionForm(forms.ModelForm):
     class Meta:
         model = Submission
-        fields = ["title", "abstract", "keywords", "papier", "conference_id"]
+        fields = ["title", "abstract", "keywords", "papier", "conference_id", "user_id"]
         widgets = {
             "abstract": forms.Textarea(attrs={"rows": 4}),
             "keywords": forms.Textarea(attrs={"rows": 2}),
+            "user_id": forms.HiddenInput(),  # cache le champ user_id
         }

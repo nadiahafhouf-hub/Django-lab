@@ -51,31 +51,37 @@ class SubmissionListView(LoginRequiredMixin, ListView):
         return Submission.objects.filter(user_id=self.request.user).order_by("-submission_date")
 
 
-# ✅ 2. Détail d'une soumission
+# 2. Détail d'une soumission
 class SubmissionDetailView(LoginRequiredMixin, DetailView):
     model = Submission
     context_object_name = "submission"
     template_name = "submissions/submissionDetail.html"
 
 
-# ✅ 3. Ajouter une soumission
+#  3. Ajouter une soumission
 class SubmissionCreateView(LoginRequiredMixin, CreateView):
     model = Submission
     form_class = SubmissionForm
     template_name = "submissions/form.html"
-    success_url = reverse_lazy("submission_list")
+    success_url = reverse_lazy("submission_liste")
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['user_id'] = self.request.user.pk  # pré-remplir le champ caché
+        return initial
 
     def form_valid(self, form):
-        form.instance.user_id = self.request.user  # associer à l’utilisateur connecté
+        form.instance.user_id = self.request.user  # s’assure que l’utilisateur connecté est pris
         return super().form_valid(form)
 
 
-# ✅ 4. Modifier une soumission
+
+#  4. Modifier une soumission
 class SubmissionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Submission
     form_class = SubmissionForm
-    template_name = "Submission/form.html"
-    success_url = reverse_lazy("submission_list")
+    template_name = "submissions/form.html"
+    success_url = reverse_lazy("submission_liste")
 
     def test_func(self):
         submission = self.get_object()

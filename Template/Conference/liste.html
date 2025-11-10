@@ -1,35 +1,83 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>La liste des conferences</h2>
+
+<h2 style="text-align:center;">La liste des conférences</h2>
+
 {% if user.is_authenticated and user.role == "commitee" %}
-<button ><a href="{% url 'conference_add' %}">Ajouter une conférence</a></button>
+<a class="button-link" href="{% url 'conference_add' %}">Ajouter une conférence</a>
 {% endif %}
-</br>
-</br>
-<table border="1">
-<tr>
-    <td>title</td>
-    <td>location</td>
-    <td>Actions</td>
-</tr>
-{% for c in liste %}
-<tr>
-    <td>{{c.name}}</td>
-    <td>{{c.location}}</td>
-    <td>
-        <a href="{% url 'conference_detail' c.pk %}">
-            Détails
-        </a>
-        {% if user.is_authenticated and user.role == "commitee" %}
-        <a href="{% url 'conference_edit' c.pk %}">
-            Edit
-        </a>
-        <a href="{% url 'conference_delete' c.pk %}">
-            Delete
-        </a>
-        {% endif %}
-    </td>
-</tr>
-{% endfor %}
+
+<br><br>
+
+<table class="table-list">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Location</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for c in liste %}
+        <tr>
+            <td>{{ c.name }}</td>
+            <td>{{ c.location }}</td>
+            <td>
+                <a class="button-link" href="{% url 'conference_detail' c.pk %}">Détails</a>
+                {% if user.is_authenticated and user.role == "commitee" %}
+                    <a class="button-link" href="{% url 'conference_edit' c.pk %}">Edit</a>
+                    <a class="button-link" href="{% url 'conference_delete' c.pk %}">Delete</a>
+                {% endif %}
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">Aucune conférence trouvée.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
 </table>
+
+<style>
+/* Table stylée */
+.table-list {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table-list th, .table-list td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-list th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.table-list tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Boutons */
+.button-link {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-right: 5px;
+}
+
+.button-link:hover {
+    background-color: #45a049;
+}
+</style>
+
 {% endblock %}

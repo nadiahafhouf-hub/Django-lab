@@ -1,11 +1,66 @@
-{% if view.object.pk %}
-<h2>Modifier une conférence</h2>
-{% else %}
-<h2>Ajouter une conférence</h2>
-{% endif %}
-<form method="post">
-    {% csrf_token %} <!-- pour la sécurite de l'envoi et si ce n'est pas inclus ça ne s'envoi pas --> 
-    {{form.as_p}}
-    <button type="submit">Enregistrer</button>
+{% extends "base.html" %}
+{% block content %}
 
-</form>
+<div class="form-container">
+    {% if view.object.pk %}
+        <h2>Modifier une conférence</h2>
+    {% else %}
+        <h2>Ajouter une conférence</h2>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button-link">Enregistrer</button>
+        <a class="button-link" href="{% url 'conferecne_liste' %}">Annuler</a>
+    </form>
+</div>
+
+<style>
+.form-container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+form p {
+    margin-bottom: 15px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Boutons */
+.button-link {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.button-link:hover {
+    background-color: #45a049;
+}
+</style>
+
+{% endblock %}

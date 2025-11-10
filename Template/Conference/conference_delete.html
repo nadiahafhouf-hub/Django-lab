@@ -1,6 +1,68 @@
-<p>Voulez vous supprimer la conference {{object.name}}?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Oui</button>
-    <a href="{% url 'conferecne_liste' %}">Non</a>
-</form>
+{% extends "base.html" %}
+{% block content %}
+
+<div class="delete-container">
+    <h2>Supprimer la conférence</h2>
+    <p>Voulez-vous supprimer la conférence <strong>{{ object.name }}</strong> ?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="button-yes">Oui</button>
+        <a class="button-no" href="{% url 'conferecne_liste' %}">Non</a>
+    </form>
+</div>
+
+<style>
+.delete-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.delete-container h2 {
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
+p {
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+form button.button-yes {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+form button.button-yes:hover {
+    background-color: #c0392b;
+}
+
+form a.button-no {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #7f8c8d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+form a.button-no:hover {
+    background-color: #636e72;
+}
+</style>
+
+{% endblock %}
