@@ -1,5 +1,5 @@
 from django import forms
-from .models import Conference
+from .models import Conference, Submission
 
 
 
@@ -35,4 +35,11 @@ class ConferenceModel(forms.ModelForm):
 
         }
 
-    
+class SubmissionForm(forms.ModelForm):
+    class Meta:
+        model = Submission
+        fields = ["title", "abstract", "keywords", "papier", "conference_id"]
+        widgets = {
+            "abstract": forms.Textarea(attrs={"rows": 4}),
+            "keywords": forms.Textarea(attrs={"rows": 2}),
+        }

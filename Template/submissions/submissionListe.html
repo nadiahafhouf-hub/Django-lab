@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>La liste des soumissions</h2>
+
+{% if user.is_authenticated %}
+<button>
+  <a href="{% url 'submission_add' %}">Ajouter une soumission</a>
+</button>
+{% endif %}
+<br><br>
+
+<table border="1">
+  <tr>
+    <td>Titre</td>
+    <td>Statut</td>
+    <td>Auteur</td>
+    <td>Conférence</td>
+    <td>Date de soumission</td>
+    <td>Paiement</td>
+    <td>Actions</td>
+  </tr>
+
+  {% for s in submissions %}
+  <tr>
+    <td>{{ s.title }}</td>
+    <td>{{ s.get_status_display }}</td>
+    <td>{{ s.user_id.username }}</td>
+    <td>{{ s.conference_id.name }}</td>
+    <td>{{ s.submission_date|date:"Y-m-d H:i" }}</td>
+    <td>
+      {% if s.payed %}
+         Payé
+      {% else %}
+         Non payé
+      {% endif %}
+    </td>
+    <td>
+  <a href="{% url 'submission_detail' s.pk %}">Détails</a>
+  {% if user == s.user_id and s.status != "accepted" and s.status != "rejected" %}
+    <a href="{% url 'submission_edit' s.pk %}">Modifier</a>
+  {% endif %}
+</td>
+
+  </tr>
+  {% empty %}
+  <tr>
+    <td colspan="7">Aucune soumission trouvée.</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
+

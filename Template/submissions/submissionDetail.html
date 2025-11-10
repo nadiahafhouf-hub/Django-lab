@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{ submission.title }}</h2>
+
+<p><strong>Auteur :</strong> {{ submission.user_id.username }}</p>
+<p><strong>Conférence :</strong> {{ submission.conference_id.name }}</p>
+<p><strong>Résumé :</strong> {{ submission.abstract }}</p>
+<p><strong>Mots-clés :</strong> {{ submission.keywords }}</p>
+<p><strong>Statut :</strong> {{ submission.get_status_display }}</p>
+<p><strong>Date de soumission :</strong> {{ submission.submission_date|date:"Y-m-d H:i" }}</p>
+
+<p>
+  <strong>PDF :</strong>
+  {% if submission.papier %}
+    <a href="{{ submission.papier.url }}" download>Télécharger le PDF</a>
+  {% else %}
+    Aucun fichier joint
+  {% endif %}
+</p>
+
+{% if user == submission.user_id and submission.status not in ("accepted", "rejected") %}
+  <a href="{% url 'submission_edit' submission.pk %}">✏️ Modifier la soumission</a>
+{% endif %}
+
+<br><br>
+<a href="{% url 'submission_liste' %}">⬅ Retour à la liste</a>
+
+{% endblock %}

@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from .models import Conference
+from .models import Conference, Submission
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
-from .forms import ConferenceModel
+from .forms import ConferenceModel, SubmissionForm
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
@@ -39,4 +40,49 @@ class ConferenceDelete(LoginRequiredMixin,DeleteView):
     model=Conference
     template_name="Conference/conference_delete.html"
     success_url = reverse_lazy("conferecne_liste")
+
+class SubmissionListView(LoginRequiredMixin, ListView):
+    model = Submission
+    context_object_name = "submissions"
+    template_name = "submissions/submissionListe.html"
+
+    def get_queryset(self):
+        # Afficher seulement les soumissions de l'utilisateur connecté
+        return Submission.objects.filter(user_id=self.request.user).order_by("-submission_date")
+
+
+# ✅ 2. Détail d'une soumission
+class SubmissionDetailView(LoginRequiredMixin, DetailView):
+    model = Submission
+    context_object_name = "submission"
+    template_name = "submissions/submissionDetail.html"
+
+
+# ✅ 3. Ajouter une soumission
+class SubmissionCreateView(LoginRequiredMixin, CreateView):
+    model = Submission
+    form_class = SubmissionForm
+    template_name = "submissions/form.html"
+    success_url = reverse_lazy("submission_list")
+
+    def form_valid(self, form):
+        form.instance.user_id = self.request.user  # associer à l’utilisateur connecté
+        return super().form_valid(form)
+
+
+# ✅ 4. Modifier une soumission
+class SubmissionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Submission
+    form_class = SubmissionForm
+    template_name = "Submission/form.html"
+    success_url = reverse_lazy("submission_list")
+
+    def test_func(self):
+        submission = self.get_object()
+        # Seul l'auteur peut modifier sa soumission
+        # et uniquement si elle n’est ni acceptée ni rejetée
+        return (
+            submission.user_id == self.request.user
+            and submission.status not in ["accepted", "rejected"]
+        )
 
