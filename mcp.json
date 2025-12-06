@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "conference-assistant": {
+      "command": "C:/Users/LENOVO/Desktop/django_projet/GestionConference/venv/Scripts/python.exe",
+      "args": ["mcp_server.py"],
+      "cwd": "C:/Users/LENOVO/Desktop/django_projet/GestionConference",
+      "description": "Un assistant pour gérer les conférences et sessions Django"
+    }
+  }
+}

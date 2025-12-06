@@ -39,10 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'UserApp',
     'ConferenceApp',
     'SessionApp',
     'SessionAppApi',
+    'securityConfigApp',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +73,20 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    # 'DEFAULT_FILTER_BACKENDS': [
+    #     'django_filters.rest_framework.DjangoFilterBackend',
+    #     'rest_framework.filters.SearchFilter',
+    #     'rest_framework.filters.OrderingFilter',
+    # ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+    'rest_framework.permissions.IsAuthenticated',
+    ),
+}
 
 WSGI_APPLICATION = 'GestionConference.wsgi.application'
 
@@ -134,3 +150,13 @@ LOGIN_URL="login"
 MEDIA_URL ='/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
+from datetime import timedelta
+SIMPLE_JWT = {
+'USER_ID_FIELD': 'user_id',
+'USER_ID_CLAIM': 'user_id',
+'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+'ALGORITHM': 'HS256',
+# clé secrète (utilise la même que Django SECRET_KEY ou une autre forte)
+'SIGNING_KEY': SECRET_KEY,
+'AUTH_HEADER_TYPES': ('Bearer',),
+'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',), }

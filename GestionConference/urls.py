@@ -27,6 +27,7 @@ urlpatterns = [
     path('user/',include("UserApp.urls")),
     path('Submission/',include("ConferenceApp.urls")),
     path('api/',include("SessionAppApi.urls")),
+    path('security/',include("securityConfigApp.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
